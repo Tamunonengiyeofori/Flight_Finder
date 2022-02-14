@@ -5,3 +5,6 @@ from pprint import pprint
 data_manager = DataManager()
 
 sheet_data = data_manager.get_all_data()
+for city in sheet_data:
+    if city["iataCode"] == "":
+        pass
