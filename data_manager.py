@@ -4,13 +4,15 @@ from pprint import pprint
 
 class DataManager():
     #This class is responsible for talking to the Google Sheet.
+    SHEETY_ENDPOINT = "https://api.sheety.co/ab979ccaa314203fa44ba15da940809e/flightDeals/prices"
 
     def __init__(self):
-        self.sheety_endpoint = "https://api.sheety.co/ab979ccaa314203fa44ba15da940809e/flightDeals/prices"
-        
+        self.destination_data ={}
         
     def get_all_data(self):
-        self.response = requests.get(url=self.sheety_endpoint)
-        return pprint(self.response.json()["prices"])
+        response = requests.get(url=self.sheety_endpoint)
+        data = self.response.json()
+        self.destination_data = data["prices"]
+        return pprint(self.destination_data)
     
         
