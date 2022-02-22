@@ -1,18 +1,30 @@
 import requests
 # import pretty print => pprint to format json
 from pprint import pprint
+SHEETY_ENDPOINT = "https://api.sheety.co/ab979ccaa314203fa44ba15da940809e/flightFinderFlightDeals/prices"
 
 class DataManager():
     #This class is responsible for talking to the Google Sheet.
-    SHEETY_ENDPOINT = "https://api.sheety.co/ab979ccaa314203fa44ba15da940809e/flightDeals/prices"
-
     def __init__(self):
         self.destination_data ={}
         
     def get_all_data(self):
-        response = requests.get(url=self.sheety_endpoint)
-        data = self.response.json()
+        response = requests.get(url=SHEETY_ENDPOINT)
+        data = response.json()
         self.destination_data = data["prices"]
-        return pprint(self.destination_data)
+        return self.destination_data
     
+    def update_destination_code(self):
+        for city in self.destination_data:
+            new_data = {
+                "price":{
+                "iataCode" : city["iataCode"]
+                }
+            }
+            
+            response = requests.put(
+                url=f"{SHEETY_ENDPOINT}/{city['id']}" , 
+                json=new_data)
+        print(response.status_code)
+        print(response.text)
         
