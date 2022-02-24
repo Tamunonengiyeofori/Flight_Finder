@@ -1,12 +1,13 @@
 import requests
 # import pretty print => pprint to format json
 from pprint import pprint
-SHEETY_ENDPOINT = "https://api.sheety.co/ab979ccaa314203fa44ba15da940809e/flightFinderFlightDeals/prices"
+SHEETY_ENDPOINT = "https://api.sheety.co/80d6f782e639ee62e4871acc43892a3b/flightFinderFlightDeals/prices"
+
 
 class DataManager():
     #This class is responsible for talking to the Google Sheet.
     def __init__(self):
-        self.destination_data ={}
+        self.destination_data = {}
         
     def get_all_data(self):
         response = requests.get(url=SHEETY_ENDPOINT)
@@ -28,3 +29,4 @@ class DataManager():
         print(response.status_code)
         print(response.text)
         
+    
