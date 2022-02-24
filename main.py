@@ -8,8 +8,11 @@ from flight_search import FlightSearch
 # create an instance of the flight_search class
 flight_search = FlightSearch()
 
-# from flight_data import FlightData
-# flight_data = FlightData()
+from flight_data import FlightData
+flight_data = FlightData()
+
+from notification_manager import NotificationManager
+notification_manager = NotificationManager()
 
 # store all the search data in a variable sheet_data
 sheet_data = data_manager.get_all_data()
@@ -21,20 +24,29 @@ for row in sheet_data:
 data_manager.destination_data = sheet_data
 data_manager.update_destination_code()
 
+# Using datetime library and it's timedelta() method to calculate time for tomorrow and time range for six months
 time_tomorrow = datetime.now() + timedelta(days=1)
 six_months_from_now = datetime.now() + timedelta(days=(6 * 30))
 
-ORIGIN_CITY_IATA = "LOS"
+ORIGIN_CITY_IATA = "LON"
+
+# Loop through each city in the sheet_data list and search for flights
 for city in sheet_data:
-    flight_search.search_flights(ORIGIN_CITY_IATA , 
+    flight = flight_search.search_flights(ORIGIN_CITY_IATA , 
                                  city["iataCode"] , 
                                  from_time=time_tomorrow , 
                                  to_time= six_months_from_now
                                  )
         
-print(sheet_data)
-    
-    
+    if flight.price < city["lowestPrice"]:
+        notification_manager.send_message(flight.price, 
+                                          flight.origin_city,
+                                          flight.origin_airport, 
+                                          flight.destination_city,
+                                          flight.destination_airport,
+                                          flight.departure_date,
+                                          flight.arrival_date)
+        
     
     
 
