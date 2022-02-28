@@ -1,6 +1,7 @@
 import requests
 # import pretty print => pprint to format json
 from pprint import pprint
+
 SHEETY_ENDPOINT = "https://api.sheety.co/80d6f782e639ee62e4871acc43892a3b/flightFinderFlightDeals/prices"
 
 
@@ -26,7 +27,7 @@ class DataManager():
             response = requests.put(
                 url=f"{SHEETY_ENDPOINT}/{city['id']}" , 
                 json=new_data)
-        print(response.status_code)
-        print(response.text)
+            print(response.status_code)
+            print(response.text)
         
     
