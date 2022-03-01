@@ -1,8 +1,8 @@
 # import os
 # from pprint import pprint
 # from dotenv import load_dotenv
-import requests
-from data_manager import DataManager
+# import requests
+# from data_manager import DataManager
 # from datetime import datetime, timedelta
 # load_dotenv()
 
@@ -38,5 +38,5 @@ from data_manager import DataManager
 
 # # print(f"{tomorrow} and {two_days_time}")
 
-user_data = DataManager()
-user_data.get_customer_details()
+# user_data = DataManager()
+# user_data.get_customer_details()
