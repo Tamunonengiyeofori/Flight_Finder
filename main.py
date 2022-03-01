@@ -3,11 +3,14 @@ from datetime import timedelta, datetime
 from data_manager import DataManager
 from flight_search import FlightSearch
 from notification_manager import NotificationManager
+from pprint import pprint
 
 # create an instance of the data manager class
 data_manager = DataManager()
 # store all the search data in a variable sheet_data
 sheet_data = data_manager.get_all_data()
+# store all customer data in a variable customer_data
+customer_data = data_manager.get_customer_details()
 # create an instance of the flight_search class
 flight_search = FlightSearch()
 # create an instance of the notification manager class
@@ -39,16 +42,28 @@ for city in sheet_data:
         to_time= six_months_from_now
         )
         
+    if flight is None: # This corrects the error => AttributeError: 'NoneType' object has no attribute 'price' 
+        continue
     if flight.price < city["lowestPrice"]:
-        notification_manager.send_message(flight.price, 
-                                          flight.origin_city,
-                                          flight.origin_airport, 
-                                          flight.destination_city,
-                                          flight.destination_airport,
-                                          flight.departure_date,
-                                          flight.arrival_date)
+        message = (f"Low price Alert !!! Only #{flight.price} to fly from {flight.dept_city}-{flight.dept_airpot_code} to {flight.arrival_city}-{flight.arriv_airport_code}, from {flight.out_date} to {flight.in_date}")
         
-    
+        emails = [user["email"] for user in customer_data ]
+        name = [user["firstName"] for user in customer_data]
+            
+        if flight.stop_overs > 0:
+            message += f"Flight has {flight.stop_overs} , via {flight.via_city}."
+            pprint(message)
+            
+        link = f"""https://www.google.co.uk/flights?hl=en#flt={flight.origin_airport}.
+        {flight.destination_airport}.
+        {flight.departure_date}*
+        {flight.destination_airport}.
+        {flight.origin_airport}.
+        {flight.arrival_date}"""
+                         
+        notification_manager.send_mails(message, emails, link)
+
+
     
 
 
